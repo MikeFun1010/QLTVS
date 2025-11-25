@@ -22,8 +22,15 @@ builder.Services.AddScoped<ThanhVienBUS>();
 // --- CẤU HÌNH KẾT NỐI DATABASE (POSTGRESQL) ---
 // Đây là đoạn quan trọng nhất bạn cần thêm
 // Ưu tiên lấy từ biến môi trường của Render, nếu không có thì lấy chuỗi mặc định (để chạy local)
-var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
-                       ?? "Host=localhost;Port=5432;Database=QLTVS;Username=postgres;Password=123456";
+var host = Environment.GetEnvironmentVariable("PGHOST");
+var user = Environment.GetEnvironmentVariable("PGUSER");
+var pass = Environment.GetEnvironmentVariable("PGPASSWORD");
+var db = Environment.GetEnvironmentVariable("PGDATABASE");
+
+// Nếu chạy trên Render (có 4 biến) thì dùng 4 biến đó, nếu không thì dùng chuỗi Local
+var connectionString = (host != null && user != null)
+    ? $"Host={host};Database={db};Username={user};Password={pass}"
+    : "Host=localhost;Port=5432;Database=QLTVS;Username=postgres;Password=123456";
 
 builder.Services.AddDbContext<LibraryContext>(options =>
     options.UseNpgsql(connectionString));
