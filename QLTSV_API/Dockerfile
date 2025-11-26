@@ -1,4 +1,4 @@
-﻿# === BUILD STAGE ===
+# === BUILD STAGE ===
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 # Copy file .csproj của project API vào thư mục con (chỉ copy file này)
