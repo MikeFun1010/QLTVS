@@ -5,14 +5,14 @@ WORKDIR /src
 # Copy file project .csproj vào thư mục con QLTSV_API/
 COPY ["QLTSV_API/QLTSV_API.csproj", "QLTSV_API/"] 
 
-# Khôi phục các thư viện (chỉ cho riêng project API)
-RUN dotnet restore "QLTSV_API/QLTSV_API.csproj"
+# KHÔI PHỤC CÁC THƯ VIỆN (Thêm --no-cache để buộc làm lại từ đầu)
+RUN dotnet restore "QLTSV_API/QLTSV_API.csproj" --no-cache
 
 # Copy toàn bộ code còn lại
 COPY . .
 
-# Publish ứng dụng (chỉ định file csproj để build)
-RUN dotnet publish "QLTSV_API/QLTSV_API.csproj" -c Release -o /app/publish
+# Publish ứng dụng (chỉ định file csproj để build, thêm --no-cache)
+RUN dotnet publish "QLTSV_API/QLTSV_API.csproj" -c Release -o /app/publish --no-cache
 
 # === RUNTIME STAGE ===
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
